@@ -1,0 +1,16 @@
+{
+    "name": "dasc/chess",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andy Cook",
+            "email": "andrewcook1990@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Dasc\\Chess\\": "./src"
+        }
+    }
+}
