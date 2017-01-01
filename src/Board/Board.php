@@ -3,7 +3,11 @@
 namespace Dasc\Chess\Board;
 
 use Dasc\Chess\Piece\Bishop;
+use Dasc\Chess\Piece\King;
+use Dasc\Chess\Piece\Knight;
 use Dasc\Chess\Piece\Pawn;
+use Dasc\Chess\Piece\Queen;
+use Dasc\Chess\Piece\Rook;
 
 class Board
 {
@@ -18,20 +22,31 @@ class Board
         $rows    = static::getRows();
         $white   = true;    // Is the tile white? We'll flip this to false to mean black.
         
-        foreach ($columns as $column) {
-            foreach ($rows as $row) {
+        foreach ($rows as $row) {
+            foreach ($columns as $column) {
                 $colour    = $white ? 'white' : 'black';
-                $reference = $column . $row;
+                $reference = $row . $column;
                 $tile      = new Tile($colour, $reference);
+
+
+                if (in_array($column, [1,2], true)){
+                    $pieceColour = 'white';
+                }else{
+                    $pieceColour = 'black';
+                }
                 
-                if (2 === $row) {
-                    $tile->setPiece(new Pawn('white'));
-                } elseif (7 === $row) {
-                    $tile->setPiece(new Pawn('black'));
-                } elseif (('C1' === $reference) || ('F1' === $reference)) {
-                    $tile->setPiece(new Bishop('white'));
-                } elseif (('C8' === $reference) || ('F8' === $reference)) {
-                    $tile->setPiece(new Bishop('black'));
+                if (in_array($column, [2,7], true)){
+                    $tile->setPiece(new Pawn($pieceColour));
+                }elseif (in_array($reference, ['C1', 'F1', 'C8', 'F8'], true)){
+                    $tile->setPiece(new Bishop($pieceColour));
+                }elseif (in_array($reference, ['A1', 'H1', 'A8', 'H8'], true)){
+                    $tile->setPiece(new Rook($pieceColour));
+                }elseif (in_array($reference, ['E1', 'E8'], true)){
+                    $tile->setPiece(new King($pieceColour));
+                }elseif (in_array($reference, ['D1', 'D8'], true)){
+                    $tile->setPiece(new Queen($pieceColour));
+                }elseif (in_array($reference, ['B1', 'G1', 'B8', 'G8'], true)){
+                    $tile->setPiece(new Knight($pieceColour));
                 }
                 
                 $this->tiles[$column][$row] = $tile;
@@ -46,12 +61,12 @@ class Board
 
     public static function getColumns()
     {
-        return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        return [8, 7, 6, 5, 4, 3, 2, 1];
     }
 
     public static function getRows()
     {
-        return [1, 2, 3, 4, 5, 6, 7, 8];
+        return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     }
 
     /**
