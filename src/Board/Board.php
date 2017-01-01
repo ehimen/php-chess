@@ -4,6 +4,7 @@ namespace Dasc\Chess\Board;
 
 use Dasc\Chess\Piece\Bishop;
 use Dasc\Chess\Piece\King;
+use Dasc\Chess\Piece\Knight;
 use Dasc\Chess\Piece\Pawn;
 use Dasc\Chess\Piece\Queen;
 use Dasc\Chess\Piece\Rook;
@@ -26,27 +27,26 @@ class Board
                 $colour    = $white ? 'white' : 'black';
                 $reference = $row . $column;
                 $tile      = new Tile($colour, $reference);
+
+                //We didn't define
+                if (in_array($column, [1,2], true)){
+                    $pieceColour = 'white';
+                }elseif (in_array($column, [7,8], true)){
+                    $pieceColour = 'black';
+                }
                 
-                if (2 === $column) {
-                    $tile->setPiece(new Pawn('white'));
-                } elseif (7 === $column) {
-                    $tile->setPiece(new Pawn('black'));
-                } elseif (('C1' === $reference) || ('F1' === $reference)) {
-                    $tile->setPiece(new Bishop('white'));
-                } elseif (('C8' === $reference) || ('F8' === $reference)) {
-                    $tile->setPiece(new Bishop('black'));
-                } elseif (('A1' === $reference) || ('H1' === $reference)){
-                    $tile->setPiece(new Rook('white'));
-                } elseif (('A8' === $reference) || ('H8' === $reference)){
-                    $tile->setPiece(new Rook('black'));
-                } elseif ('E1' === $reference) {
-                    $tile->setPiece(new King('white'));
-                } elseif ('E8' === $reference) {
-                    $tile->setPiece(new King('black'));
-                } elseif ('D1' === $reference){
-                    $tile->setPiece(new Queen('white'));
-                } elseif ('D8' === $reference){
-                    $tile->setPiece(new Queen('black'));
+                if (in_array($column, [2,7], true)){
+                    $tile->setPiece(new Pawn($pieceColour));
+                }elseif (in_array($reference, ['C1', 'F1', 'C8', 'F8'], true)){
+                    $tile->setPiece(new Bishop($pieceColour));
+                }elseif (in_array($reference, ['A1', 'H1', 'A8', 'H8'], true)){
+                    $tile->setPiece(new Rook($pieceColour));
+                }elseif (in_array($reference, ['E1', 'E8'], true)){
+                    $tile->setPiece(new King($pieceColour));
+                }elseif (in_array($reference, ['D1', 'D8'], true)){
+                    $tile->setPiece(new Queen($pieceColour));
+                }elseif (in_array($reference, ['B1', 'G1', 'B8', 'G8'], true)){
+                    $tile->setPiece(new Knight($pieceColour));
                 }
                 
                 $this->tiles[$column][$row] = $tile;
