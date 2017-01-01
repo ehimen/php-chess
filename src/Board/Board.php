@@ -28,10 +28,10 @@ class Board
                 $reference = $row . $column;
                 $tile      = new Tile($colour, $reference);
 
-                //We didn't define
+
                 if (in_array($column, [1,2], true)){
                     $pieceColour = 'white';
-                }elseif (in_array($column, [7,8], true)){
+                }else{
                     $pieceColour = 'black';
                 }
                 
